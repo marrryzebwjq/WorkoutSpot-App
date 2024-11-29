@@ -186,41 +186,52 @@ class StatsView {
     this.activitiesList = document.createElement('div');
 
     activities.forEach((activities) => {
-      this.activity = document.createElement('li');
-      this.activity.className = "list-unstyled justify-content-between align-items-center m-2";
+      const activity = document.createElement('li');
+      activity.className = "list-unstyled justify-content-between align-items-center m-2";
 
       //text
-      this.name = document.createElement('input');
-      this.name.id = `${activities.id}`;
-      this.name.className = "btn btn-outline-dark round-border m-1";
-      this.name.value = activities.name;
+      const name = document.createElement('input');
+      activity.appendChild(name);
+      Object.assign(name, {
+        id : `${activities.id}`,
+        className : "btn btn-outline-dark round-border m-1",
+        value : activities.name,
+      });
       //number
-      this.num = document.createElement('input');
-      this.num.className = "btn btn-outline-dark round-border";
-      this.num.id = `${activities.id}_number`;
-      this.num.value = activities.number1;
-      this.num.style.width = "3rem";
+      let num = document.createElement('input');
+      Object.assign(num, {
+        className : "btn btn-outline-dark round-border",
+        id : `${activities.id}_number`,
+        value : activities.number1,
+      });
+      num.style.width = "3rem";
+      activity.appendChild(num);
+
       //text
-      this.x = document.createElement('span');
-      this.x.className = "m-1";
-      this.x.innerHTML = "x";
+      const x = document.createElement('span');
+      x.className = "m-1";
+      x.innerHTML = "x";
+      activity.appendChild(x);
       //number
-      this.num2 = document.createElement('input');
-      this.num2.className = "btn btn-outline-dark round-border";
-      this.num2.value = activities.number2;
-      this.num2.style.width = "3rem";
+      const num2 = document.createElement('input');
+      Object.assign(num2, {
+        className : "btn btn-outline-dark round-border",
+        id : `${activities.id}_number2`,
+        value : activities.number2,
+      });
+      num2.style.width = "3rem";
+      activity.appendChild(num2);
       //delete
-      this.del = document.createElement('button');
-      this.del.className = "btn btn-danger btn-sm btn-delete m-2";
-      this.del.innerHTML = "🗑️";
-      this.del.setAttribute('data-name', activities.name);
+      const del = document.createElement('button');
+      Object.assign(del, {
+        id : `${activities.id}_delete`,
+        className : "btn btn-danger btn-sm btn-delete m-2",
+        innerHTML : "🗑️",
+      });
+      del.setAttribute('data-name', activities.name);
+      activity.appendChild(del);
       //
-      this.activity.appendChild(this.name);
-      this.activity.appendChild(this.num);
-      this.activity.appendChild(this.x);
-      this.activity.appendChild(this.num2);
-      this.activity.appendChild(this.del);
-      this.activitiesList.appendChild(this.activity);
+      this.activitiesList.appendChild(activity);
     });//end for
     this.manyButtonsDiv.appendChild(this.activitiesList);
   }
