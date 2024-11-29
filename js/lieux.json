@@ -1,0 +1,19 @@
+{
+    "size":2,
+    "elements":[
+        {
+            "x":700,
+            "y":900,
+            "name":"PARKS",
+            "description":"des barres etc.",
+            "affluence":0.548
+        },
+        {
+            "x":975,
+            "y":369,
+            "name":"Jardin des plantes",
+            "description":"des trucs",
+            "affluence":0.111
+        }
+    ]
+}
