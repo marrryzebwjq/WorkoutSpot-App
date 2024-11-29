@@ -32,18 +32,11 @@ class StatsView {
 
     const header = document.createElement('div');
     header.className = "bg-success text-black p-2";
+    header.innerHTML = `
+        <button class="btn btn-outline-dark" onclick="window.location.href='accueil.html';"><</button>
+        <h1 class="col d-flex justify-content-center">TRACKING</h1>
+    `;
     this.div.appendChild(header);
-
-    const returnButton = document.createElement('button');
-    returnButton.innerHTML = '<';
-    returnButton.className = "btn btn-outline-dark";
-    returnButton.setAttribute('onclick', "window.location.href='accueil.html';");
-    header.appendChild(returnButton);
-
-    const title = document.createElement('h1');
-    title.className = "col d-flex justify-content-center"
-    title.innerHTML = 'TRACKING';
-    header.appendChild(title);
   }
 
   createOptions() {
@@ -51,12 +44,14 @@ class StatsView {
     optionsDiv.className = "d-flex justify-content-center w-100 mb-3";
 
     const suivisButton = document.createElement('button');
+    suivisButton.id = "buttonSuivis"
     suivisButton.innerHTML = 'Suivis';
     suivisButton.className = "btn btn-warning w-100";
     suivisButton.style.borderRadius = '0';
     suivisButton.onclick = () => this.showSuivis();
 
     const cetteSeanceButton = document.createElement('button');
+    cetteSeanceButton.id = "buttonCetteSeance"
     cetteSeanceButton.innerHTML = 'Cette séance';
     cetteSeanceButton.className = "btn btn-warning w-100";
     cetteSeanceButton.style.borderRadius = '0';
@@ -65,6 +60,9 @@ class StatsView {
     optionsDiv.appendChild(suivisButton);
     optionsDiv.appendChild(cetteSeanceButton);
     this.div.appendChild(optionsDiv);
+
+    this.buttonSuivis = this.div.querySelector('#buttonSuivis');
+    this.buttonCetteSeance = this.div.querySelector('#buttonCetteSeance');
   }
 
   createMain() {
@@ -122,136 +120,79 @@ class StatsView {
   showCetteSeance() {
     this.mainDiv.innerHTML = '';
 
-
-    //TODO à supprimer ou modifier le texte
+    // Petite phrase
     const cetteSeanceTextDiv = document.createElement('div');
     const cetteSeanceText = document.createElement('p');
-    cetteSeanceText.innerHTML = 'Ajoutez les activités de la séance actuelle.';
+    cetteSeanceText.innerHTML = 'Les exercices d\'aujourd\'hui :';
     cetteSeanceTextDiv.appendChild(cetteSeanceText);
     this.mainDiv.appendChild(cetteSeanceTextDiv);
 
-
-    //TODO les boutons avec toutes les activités
+    // Boutons
     this.manyButtonsDiv = document.createElement('div');
     this.manyButtonsDiv.className = "text-center"
-
-    //this.createActivity();
-    //this.createActivity();
-    //this.createActivity();
-    this.addActivity();
-    //TODO faut que quand on clique sur le bouton cette scéance, ça active create activity (observer)
+    this.manyButtonsDiv.innerHTML = `
+    <!-- Bouton Ajouter un exercice -->
+    <div class="d-flex justify-content-end m-2">
+        <button id="addButton" class="btn btn-outline-success round-border">Ajouter un exercice</button>
+    </div>
+    
+    <!-- Liste d'exercices -->
+    <div id="activityForm" style="display: none;" class="m-2">
+        <input type="text" id="addName" placeholder="Nom de l\'exercice" class="btn btn-outline-dark round-border m-1"/>
+        <input type="number" id="addNumber1" placeholder="0" class="btn btn-outline-dark round-border m-1" style="width: 3rem"/>
+        <span class="m-1">x</span>
+        <input type="number" id="addNumber2" placeholder="0" class="btn btn-outline-dark round-border m-1" style="width: 3rem"/>
+        <button id="confirm" class="btn btn-success round-border">Valider</button>
+    </div>
+    
+    <div id="activitiesList"/>`
 
     this.mainDiv.appendChild(this.manyButtonsDiv);
-    //bas de page
+    // Bas de page
+
+
+    this.addButton = this.manyButtonsDiv.querySelector('#addButton');
+    this.activityForm = this.manyButtonsDiv.querySelector('#activityForm');
+    this.activitiesList = this.manyButtonsDiv.querySelector('#activitiesList');
+
+    this.addName = this.manyButtonsDiv.querySelector('#addName');
+    this.addNumber1 = this.manyButtonsDiv.querySelector('#addNumber1');
+    this.addNumber2 = this.manyButtonsDiv.querySelector('#addNumber2');
+    this.confirm = this.manyButtonsDiv.querySelector('#confirm');
   }
-
-/*
-  createActivity() {
-
-    this.activitiesList = document.createElement('li');
-    this.activitiesList.className = 'list-group-item d-flex justify-content-between align-items-center';
-
-    this.activityDiv = document.createElement('div');
-    this.activityDiv.className = "m-2";
-    //text
-    this.activityText = document.createElement('input');
-    this.activityText.className = "btn btn-outline-dark round-border m-1";
-    this.activityText.value = "push up";
-    this.activityDiv.appendChild(this.activityText);
-    //number
-    this.actvNb = document.createElement('input');
-    this.actvNb.className = "btn btn-outline-dark round-border";
-    this.actvNb.value = "3";
-    this.actvNb.style.width = "3rem";
-    this.activityDiv.appendChild(this.actvNb);
-    //text
-    this.x = document.createElement('span');
-    this.x.className = "m-1";
-    this.x.innerHTML = "x";
-    this.activityDiv.appendChild(this.x);
-    //number
-    this.actvNb2 = document.createElement('input');
-    this.actvNb2.className = "btn btn-outline-dark round-border";
-    this.actvNb2.value = "3";
-    this.actvNb2.style.width = "3rem";
-    this.activityDiv.appendChild(this.actvNb2);
-    //
-    this.activitiesList.appendChild(this.activityDiv);
-    this.manyButtonsDiv.appendChild(this.activitiesList);
-
-  }
-*/
 
   createActivities(activities) {
-    this.activitiesList = document.createElement('div');
+    this.activitiesList.innerHTML = ''
 
     activities.forEach((activities) => {
       const activity = document.createElement('li');
       activity.className = "list-unstyled justify-content-between align-items-center m-2";
 
-      //text
-      const name = document.createElement('input');
-      activity.appendChild(name);
-      Object.assign(name, {
-        id : `${activities.id}`,
-        className : "btn btn-outline-dark round-border m-1",
-        value : activities.name,
-      });
-      //number
-      let num = document.createElement('input');
-      Object.assign(num, {
-        className : "btn btn-outline-dark round-border",
-        id : `${activities.id}_number`,
-        value : activities.number1,
-      });
-      num.style.width = "3rem";
-      activity.appendChild(num);
-
-      //text
-      const x = document.createElement('span');
-      x.className = "m-1";
-      x.innerHTML = "x";
-      activity.appendChild(x);
-      //number
-      const num2 = document.createElement('input');
-      Object.assign(num2, {
-        className : "btn btn-outline-dark round-border",
-        id : `${activities.id}_number2`,
-        value : activities.number2,
-      });
-      num2.style.width = "3rem";
-      activity.appendChild(num2);
-      //delete
-      const del = document.createElement('button');
-      Object.assign(del, {
-        id : `${activities.id}_delete`,
-        className : "btn btn-danger btn-sm btn-delete m-2",
-        innerHTML : "🗑️",
-      });
-      del.setAttribute('data-name', activities.name);
-      activity.appendChild(del);
-      //
+      activity.innerHTML = `
+      <input  id=${activities.id}
+              class="btn btn-outline-dark round-border m-1"
+              readonly="readonly"
+              value="${activities.name}">
+              
+      <input id="${activities.id}_number1"
+              class="btn btn-outline-dark round-border"
+              style="width: 3rem"
+              readonly="readonly"
+              value="${activities.number1}">
+              
+      <span class="m-1">x</span>
+      
+      <input id="${activities.id}_number2"
+              class="btn btn-outline-dark round-border"
+              style="width: 3rem"
+              readonly="readonly"
+              value="${activities.number2}">
+        `
       this.activitiesList.appendChild(activity);
-    });//end for
-    this.manyButtonsDiv.appendChild(this.activitiesList);
+    });
   }
 
 
-
-  addActivity() {
-    //Button add
-    const addDiv = document.createElement('div');
-    addDiv.className = "m-2";
-
-    const add = document.createElement('button');
-    add.className = "btn btn-outline-dark round-border";
-    add.innerHTML = "Add activity";
-    addDiv.appendChild(add);
-
-    this.manyButtonsDiv.appendChild(addDiv);
-
-
-  }
 
 }
 

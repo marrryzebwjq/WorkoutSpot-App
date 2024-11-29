@@ -14,32 +14,39 @@ class StatsController {
       this.model.addObservers(updateStats);
 
       // action
-      this.view.add.addEventListener('click', () => model.addActivity());
+      this.view.buttonSuivis.addEventListener('click', () => model.reloadView());
+      this.view.buttonCetteSeance.addEventListener('click', () => model.reloadView());
+
+
+      this.view.addButton.addEventListener('click', () => displayForm());
+      this.view.confirm.addEventListener('click', () => confirm());
 
 
 
 
+      let displayForm = () => {
+          this.view.activityForm.style.display = 'block';
+          this.view.addButton.style.display = 'none';
+      }
 
-      let actionAdd = (event) => {
-          const name = this.view.input.value.trim();
-          if (name) {
-              this.model.addFriend(name);
-              this.view.input.value = ''; // Clear input
-          }
-      };
-      let actionRemove = (name) => {
-          if (name) {
-              this.model.removeFriend(name);
-              this.view.input.value = ''; // Clear input
-          }
-      };
+      let confirm = () => {
+          //input
+          const name = this.view.addName.value;
+          const number1 = this.view.addNumber1.value;
+          const number2 = this.view.addNumber2.value;
 
-      this.view.add.addEventListener('click', actionAdd);
-      this.view.activitiesList.addEventListener('click', (event) => {
-          if (event.target.classList.contains('btn-delete')) {
-              const name = event.target.dataset.name;
-              actionRemove(name);
-          }
-      });
+          //ajout dans le modèle
+          this.model.addActivity(name, number1, number2);
+
+          //fin
+          this.view.activityForm.style.display = 'none';
+          this.view.addButton.style.display = 'block';
+          this.view.addName.value = '';
+          this.view.addNumber1.value = '';
+          this.view.addNumber2.value = '';
+
+      }
+
+
   }
 }

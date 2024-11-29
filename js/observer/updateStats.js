@@ -2,7 +2,6 @@
  * Classe update pour le Tracking
  * @author Marie POINT
  */
-
 class UpdateStats extends Observer {
   constructor(view, model) {
     super();
